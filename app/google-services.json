@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "58266721418",
+    "firebase_url": "https://westcuestionario.firebaseio.com",
+    "project_id": "westcuestionario",
+    "storage_bucket": "westcuestionario.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58266721418:android:11286265b64a2f4ef6e173",
+        "android_client_info": {
+          "package_name": "com.example.westcuestionario"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58266721418-cu0heu4b0mdjmsm1jhgoqc0efg9nsbqi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.westcuestionario",
+            "certificate_hash": "a5cec3d40457c25c730a5f739a90122867e33c5f"
+          }
+        },
+        {
+          "client_id": "58266721418-vn4in9rjtsngd7nmdtii6gab1djebqqr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANPije29HanGVwMsE1KPc7g3CQ8HJD1r0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58266721418-vn4in9rjtsngd7nmdtii6gab1djebqqr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
