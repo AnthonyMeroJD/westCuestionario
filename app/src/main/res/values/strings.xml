@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">westCuestionario</string>
+    <string name="bienvenido">Bienvenido al Cuestionario del Intituto WestPoint</string>
+    <string name="asignaura">Asignatura</string>
 </resources>
