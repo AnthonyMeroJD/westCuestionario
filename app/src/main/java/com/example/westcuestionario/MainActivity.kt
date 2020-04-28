@@ -19,22 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        preguntasReference=FirebaseDatabase.getInstance().reference.child("preguntas")
-        var listener= object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Get Post object and use the values to update the UI
-                val post = dataSnapshot.getValue(Banco::class.java)
 
-                // ...
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
-                // ...
-            }
-        }
-        preguntasReference.addValueEventListener(listener)
 
     }
 
