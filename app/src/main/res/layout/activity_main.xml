@@ -84,6 +84,7 @@
                 app:cardElevation="6dp">
 
                 <LinearLayout
+                    android:id="@+id/mainRentrenamiento"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
@@ -126,6 +127,7 @@
                 app:cardElevation="6dp">
 
                 <LinearLayout
+                    android:id="@+id/mainDesarrolloHumano"
                     android:layout_width="160dp"
                     android:layout_height="118dp"
                     android:layout_margin="12dp"
@@ -168,6 +170,7 @@
                 app:cardElevation="6dp">
 
                 <LinearLayout
+                    android:id="@+id/mainDefensaPersonal"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
@@ -210,6 +213,7 @@
                 app:cardElevation="6dp">
 
                 <LinearLayout
+                    android:id="@+id/mainSeguridadCiudadana"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
@@ -226,11 +230,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:gravity="center_horizontal"
                         android:text="@string/seguridadciudadana"
                         android:textAlignment="center"
                         android:textColor="#6f6f6f"
-                        android:textSize="18sp"
-                        android:gravity="center_horizontal" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -254,6 +258,7 @@
                 app:cardElevation="6dp">
 
                 <LinearLayout
+                    android:id="@+id/mainLegal"
                     android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:layout_margin="12dp"
@@ -296,6 +301,7 @@
                 app:cardElevation="6dp">
 
                 <LinearLayout
+                    android:id="@+id/mainRiesgos"
                     android:layout_width="160dp"
                     android:layout_height="118dp"
                     android:layout_margin="12dp"
@@ -341,6 +347,7 @@
                 android:layout_marginBottom="15dp">
 
                 <LinearLayout
+                    android:id="@+id/mainPrimeroAuxilios"
                     android:layout_width="160dp"
                     android:layout_height="118dp"
                     android:layout_margin="12dp"

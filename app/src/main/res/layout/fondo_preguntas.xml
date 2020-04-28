@@ -67,86 +67,10 @@
 
             <!-- Inicio de las tarjetas de preguntas -->
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cVPreguntas"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPreguntas"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:padding="5dp"
-
-
-                >
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/titulo_preguntas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Esta es una pregunta"
-                        android:textSize="18sp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginStart="5dp"
-                        android:textColor="@color/titulos"/>
-                    <RadioGroup
-                        android:id="@+id/grupo_radio_button"
-                        android:layout_marginTop="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <RadioButton
-                            android:id="@+id/opcion1"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="@string/bienvenido"
-                            android:textColor="@color/textos"/>
-                        <RadioButton
-                            android:id="@+id/opcion2"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:textSize="14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bienvenido"
-                            android:textColor="@color/textos"
-                            />
-                        <RadioButton
-                            android:id="@+id/opcion3"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:textSize="14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bienvenido"
-                            android:textColor="@color/textos"/>
-                        <RadioButton
-                            android:id="@+id/opcion4"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:textSize="14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bienvenido"
-                            android:textColor="@color/textos"/>
-
-                    </RadioGroup>
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+                android:layout_height="wrap_content"/>
 
             <!-- de tarjetas de preguntas -->
 
