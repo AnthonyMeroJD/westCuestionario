@@ -1,6 +1,8 @@
 package com.example.westcuestionario
 
 data class preguntas(
-    val listaPreguntas:HashMap<String,ArrayList<Banco>>
+    var opciones:MutableMap<String,String>?= HashMap(),
+    var pregunta:String="def",
+    var respuesta:String="def"
 
 )
