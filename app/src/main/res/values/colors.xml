@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="fondoAzulLogin">#163172</color>
     <color name="blanco">#FFFFFF</color>
+    <color name="titulos">#202124</color>
+    <color name="textos">#5f6368</color>
 </resources>

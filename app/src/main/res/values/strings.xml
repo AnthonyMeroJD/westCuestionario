@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">westCuestionario</string>
-    <string name="bienvenido">Bienvenido al Cuestionario del Intituto WestPoint</string>
+    <string name="bienvenido">Bienvenido al Cuestionario del Instituto WestPoint</string>
+
+    <!-- Nombre de las asignaturas -->
+
     <string name="asignaura">Asignatura</string>
+    <string name="reentrenamiento">Reentrenamiento</string>
+    <string name="desarrollohumano">Desarrollo Humano</string>
+    <string name="defensapersonal">Defensa Personal</string>
+    <string name="seguridadciudadana">Seguridad Ciudadana</string>
+    <string name="legal">Legal</string>
+    <string name="riesgos">Riesgos</string>
+    <string name="primerosauxilios">Primeros Auxilios</string>
+    <string name="publicidad_westpoint">Sigue nuestros cursos al mejor precio, contacta al: 0999091964</string>
+
 </resources>
