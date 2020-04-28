@@ -53,12 +53,41 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         defensaPersonal.setOnClickListener(){
-            Toast.makeText(this.applicationContext,"click",Toast.LENGTH_SHORT).show()
+            intent=Intent(this.applicationContext,CuestionarioActivity::class.java)
+            var key=Asignaturas.DEFENSAPERSONAL.name
+            intent.putExtra(key,Asignaturas.REENTRENAMIENTO.nombreAsignatura())
+            startActivity(intent)
         }
         desarrolloHumano.setOnClickListener(){
-            Toast.makeText(this.applicationContext,"click",Toast.LENGTH_SHORT).show()
+            intent=Intent(this.applicationContext,CuestionarioActivity::class.java)
+            var key=Asignaturas.DESARROLLOHUMANO.name
+            intent.putExtra(key,Asignaturas.DESARROLLOHUMANO.nombreAsignatura())
+            startActivity(intent)
         }
-
+        seguridadCiudadana.setOnClickListener(){
+            intent=Intent(this.applicationContext,CuestionarioActivity::class.java)
+            var key=Asignaturas.SEGURIDADCIUDADANA.name
+            intent.putExtra(key,Asignaturas.SEGURIDADCIUDADANA.nombreAsignatura())
+            startActivity(intent)
+        }
+        legal.setOnClickListener(){
+            intent=Intent(this.applicationContext,CuestionarioActivity::class.java)
+            var key=Asignaturas.LEGAL.name
+            intent.putExtra(key,Asignaturas.LEGAL.nombreAsignatura())
+            startActivity(intent)
+        }
+        riesgos.setOnClickListener(){
+            intent=Intent(this.applicationContext,CuestionarioActivity::class.java)
+            var key=Asignaturas.RIESGOS.name
+            intent.putExtra(key,Asignaturas.RIESGOS.nombreAsignatura())
+            startActivity(intent)
+        }
+        primerosAuxilios.setOnClickListener(){
+            intent=Intent(this.applicationContext,CuestionarioActivity::class.java)
+            var key=Asignaturas.PRIMEROSAUXILIOS.name
+            intent.putExtra(key,Asignaturas.PRIMEROSAUXILIOS.nombreAsignatura())
+            startActivity(intent)
+        }
 
 
     }

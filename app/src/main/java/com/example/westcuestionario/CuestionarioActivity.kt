@@ -37,19 +37,47 @@ class CuestionarioActivity : AppCompatActivity() {
         setContentView(R.layout.fondo_preguntas)
         var i=intent
         var b:Bundle?=i.extras
-        var asignatura:String
+
         b?.let {
-              if (b.getString(Asignaturas.REENTRENAMIENTO.name)!=null){
-                  asignatura=Asignaturas.REENTRENAMIENTO.nombreAsignatura()
-                  preguntasRef=FirebaseDatabase.getInstance().reference.child("preguntas").child(asignatura)
-              }
+           referencia(it)?.let {
+               preguntasRef=it
+           }
         }
         rv=rvPreguntas
+    }
+    fun referencia(b:Bundle):DatabaseReference?{
+        var asignatura:String
+        var referencia:DatabaseReference?=null
+        if (b.getString(Asignaturas.REENTRENAMIENTO.name)!=null){
+            asignatura=Asignaturas.REENTRENAMIENTO.nombreAsignatura()
+            referencia=FirebaseDatabase.getInstance().reference.child("preguntas").child(asignatura)
+        }
+        if (b.getString(Asignaturas.PRIMEROSAUXILIOS.name)!=null){
+            asignatura=Asignaturas.PRIMEROSAUXILIOS.nombreAsignatura()
+            referencia=FirebaseDatabase.getInstance().reference.child("preguntas").child(asignatura)
+        }
+        if (b.getString(Asignaturas.RIESGOS.name)!=null){
+            asignatura=Asignaturas.RIESGOS.nombreAsignatura()
+            referencia=FirebaseDatabase.getInstance().reference.child("preguntas").child(asignatura)
+        }
+        if (b.getString(Asignaturas.LEGAL.name)!=null){
+            asignatura=Asignaturas.LEGAL.nombreAsignatura()
+            referencia=FirebaseDatabase.getInstance().reference.child("preguntas").child(asignatura)
+        }
+        if (b.getString(Asignaturas.SEGURIDADCIUDADANA.name)!=null){
+            asignatura=Asignaturas.SEGURIDADCIUDADANA.nombreAsignatura()
+            referencia=FirebaseDatabase.getInstance().reference.child("preguntas").child(asignatura)
+        }
+        if (b.getString(Asignaturas.DEFENSAPERSONAL.name)!=null){
+            asignatura=Asignaturas.DEFENSAPERSONAL.nombreAsignatura()
+            referencia=FirebaseDatabase.getInstance().reference.child("preguntas").child(asignatura)
+        }
+        if (b.getString(Asignaturas.DESARROLLOHUMANO.name)!=null){
+            asignatura=Asignaturas.DESARROLLOHUMANO.nombreAsignatura()
+            referencia=FirebaseDatabase.getInstance().reference.child("preguntas").child(asignatura)
+        }
 
-
-
-
-
+        return  referencia
     }
 
     override fun onStart() {
