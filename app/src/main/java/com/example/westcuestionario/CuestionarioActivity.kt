@@ -26,9 +26,14 @@ class CuestionarioActivity : AppCompatActivity() {
     //adaptadores para recyclerview
     lateinit var opcion: FirebaseRecyclerOptions<Pregunta>
     lateinit var adapter: FirebaseRecyclerAdapter<Pregunta, PreguntasViewHolder>
-
+    /*
+    * @param View
+    * @return ViewHolder
+    * view holder para mi recycler
+    * */
     inner class PreguntasViewHolder(view:View):RecyclerView.ViewHolder(view){
         val pregunta =view.titulo_preguntas
+        val radioGroup=view.grupo_radio_button
 
 
     }
@@ -45,6 +50,11 @@ class CuestionarioActivity : AppCompatActivity() {
         }
         rv=rvPreguntas
     }
+    /*
+    * @param Bundle
+    * @return DatabaseReference
+    * retorna la referencia dependiendo del key del bundle
+    * */
     fun referencia(b:Bundle):DatabaseReference?{
         var asignatura:String
         var referencia:DatabaseReference?=null
@@ -93,6 +103,12 @@ class CuestionarioActivity : AppCompatActivity() {
         adapter.startListening()
 
     }
+    /*
+    * @param Qry
+    * @return FirebaseRecyclerAdapter
+    * recibe el qry de la consulta y retorna el adaptador
+    * que llena el recycler
+    * */
 
     fun revLlenar(qry:Query):FirebaseRecyclerAdapter<Pregunta,PreguntasViewHolder>{
         opcion=FirebaseRecyclerOptions.Builder<Pregunta>().setQuery(
@@ -119,13 +135,15 @@ class CuestionarioActivity : AppCompatActivity() {
                 model: Pregunta
             ) {
                 holder.pregunta.text=model.pregunta
-
-                }
-                /*
-
                 var y =position
                 var id=(y+1)*100
                 var n=getItemId(position)
+
+
+
+            }
+                /*
+
 
                 holder.rgroup.removeAllViews()
                 if (chklst.buttons!=null){
