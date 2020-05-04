@@ -31,6 +31,8 @@ class CuestionarioActivity() : AppCompatActivity() {
     lateinit var preg: HashMap<Int, ArrayList<String>>
     lateinit var opcionesPreguntas: ArrayList<Pregunta>
 
+    /*RespuestasChoice*/
+    private  lateinit var respuestasChoice:BooleanArray
 
     /*boolean checked*/
     private lateinit var mCheckedA: BooleanArray
@@ -62,6 +64,7 @@ class CuestionarioActivity() : AppCompatActivity() {
         mCheckedD = BooleanArray(20)
         mCheckedE = BooleanArray(20)
         mCheckedF = BooleanArray(20)
+        respuestasChoice= BooleanArray(20)
         opcion = FirebaseRecyclerOptions.Builder<Pregunta>().setQuery(
             qry, Pregunta::class.java
         ).build()
@@ -145,10 +148,8 @@ class CuestionarioActivity() : AppCompatActivity() {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.tarjeta_preguntas, parent, false)
                 var vH = PreguntasViewHolder(view)
-
                 return vH
             }
-
 
             override fun onBindViewHolder(
                 holder: PreguntasViewHolder,
@@ -156,15 +157,11 @@ class CuestionarioActivity() : AppCompatActivity() {
                 model: Pregunta
             ) {
 
-                holder.tituloPregunta.text = model.pregunta
-
-
                 var pregunta = model.pregunta
                 var respuesta = model.respuesta
                 var rg = holder.radGroup
                 var opciones = model.opciones!!.values
                 var opcionesCompletas = ArrayList<String>()
-                holder.tituloPregunta.text = pregunta
                 var op1 = holder.opcion1
                 var op2 = holder.opcion2
                 var op3 = holder.opcion3
@@ -172,6 +169,7 @@ class CuestionarioActivity() : AppCompatActivity() {
                 var op5 = holder.opcion5
                 var op6 = holder.opcion6
                 rg.clearCheck()
+                holder.tituloPregunta.text = pregunta
                 var posit = position
                 for (opcion in opciones) {
                     opcionesCompletas.add(opcion)
@@ -188,6 +186,7 @@ class CuestionarioActivity() : AppCompatActivity() {
                             1 -> op2.text = opcion
 
                         }
+                        rg.removeView(op3)
                         rg.removeView(op4)
                         rg.removeView(op5)
                         rg.removeView(op6)
@@ -500,12 +499,13 @@ class CuestionarioActivity() : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
 
         adapter.startListening()
+        btnCalificar.setOnClickListener {
+                
+        }
 
 
     }
 
-
-   
 
 }
 
