@@ -48,8 +48,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginRight="12dp"
-                android:src="@drawable/logo"
-                android:contentDescription="@string/bienvenido" />
+                android:src="@drawable/logo" />
 
         </RelativeLayout>
 
@@ -73,12 +72,13 @@
             <Button
 
                 android:layout_width="wrap_content"
-                android:text="@string/calificar"
+                android:text="calificar"
+
                 android:id="@+id/btnCalificar"
-                android:backgroundTint="@color/fondoAzulClaro"
+                android:backgroundTint="@color/fondoAzulLogin"
                 android:layout_height="wrap_content"
                 android:textColor="@color/blanco"
-                tools:targetApi="lollipop">
+                >
 
             </Button>
 
