@@ -9,22 +9,23 @@ data class PreguntaAlgoritmo(
     val opciones:HashMap<String, String>?=null,
     val respuesta:String="def"
 ){
-    /* onFirebase(R.raw.preguntasriesgos,R.raw.opcionesriesgos,R.raw.respuestasriesgos,"Riesgos")
+    /*
+     onFirebase(R.raw.preguntasriesgos,R.raw.opcionesriesgos,R.raw.respuestasriesgos,"Riesgos")
         onFirebase(R.raw.preguntasreentrenamiento,R.raw.opcionesreentrenamiento,R.raw.respuestasreentrenamiento,"Rentrenamiento")
         onFirebase(R.raw.preguntasprimerosauxilios,R.raw.opcionesprimerosauxilios,R.raw.respuestasprimerosauxilios,"PrimerosAuxilios")
         onFirebase(R.raw.preguntasdesarrollohumano,R.raw.opcionesdesarrollohumano,R.raw.respuestasdesarrollohumano,"DesarrolloHumano")
         onFirebase(R.raw.preguntasseguridadciudadana,R.raw.opcionesseguridadciudadana,R.raw.respuestasseguridadciudadana,"SeguridadCiudadana")
         onFirebase(R.raw.preguntasdefensapersonal,R.raw.opcionesdefensapersonal,R.raw.respuestasdefensapersonal,"DefensaPersonal")
-        onFirebase(R.raw.preguntaslegal,R.raw.opcioneslegal,R.raw.respuestaslegal,"Legal")*/
+        onFirebase(R.raw.preguntaslegal,R.raw.opcioneslegal,R.raw.respuestaslegal,"Legal")
 
-/*
-    private fun crearBanco(listaP:List<String>,listaO:List<String>,listaR: List<String>,nombreBanco:String): ArrayList<banco> {
-        var bancoPreg=ArrayList<banco>()
+
+    private fun crearBanco(listaP:List<String>,listaO:List<String>,listaR: List<String>,nombreBanco:String): ArrayList<Banco> {
+        var bancoPreg=ArrayList<Banco>()
         var listaP=listaP
         var listaO=listaO
         var listaR=listaR
         for(p in listaP) {
-            var pre:banco= banco(null,null,null)
+            var pre:Banco= Banco(null,null,null)
             //opciones
             for (l in listaO) {
                 var a = HashMap<String, String>()
@@ -38,7 +39,7 @@ data class PreguntaAlgoritmo(
                 }
                 for(r in listaR){
                     var listaRt=listaR.toMutableList()
-                    pre = banco(a,p,r)
+                    pre = Banco(a,p,r)
                     listaRt.remove(r)
                     listaR=listaRt
                     break
@@ -51,7 +52,7 @@ data class PreguntaAlgoritmo(
 
             bancoPreg.add(pre)
         }
->>>>>>> recycler
+
 
 
         return bancoPreg
@@ -81,7 +82,7 @@ data class PreguntaAlgoritmo(
         var i=0
         var asignaturaL=HashMap<String,ArrayList<Literal>>()
         var literal=ArrayList<Literal>()
-        var lH=HashMap<String,banco>()
+        var lH=HashMap<String,Banco>()
         var ref=FirebaseDatabase.getInstance().reference.child("preguntas").child(nombreBanco)
         for (p in Banco){
             var k="key_".plus(i.toString())

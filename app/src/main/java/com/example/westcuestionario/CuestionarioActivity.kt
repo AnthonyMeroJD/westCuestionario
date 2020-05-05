@@ -1,11 +1,14 @@
 package com.example.westcuestionario
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.contains
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +35,7 @@ class CuestionarioActivity() : AppCompatActivity() {
     lateinit var opcionesPreguntas: ArrayList<Pregunta>
 
     /*RespuestasChoice*/
-    private  lateinit var respuestasChoice:BooleanArray
+    private lateinit var respuestasChoice: HashMap<Int, String>
 
     /*boolean checked*/
     private lateinit var mCheckedA: BooleanArray
@@ -42,6 +45,10 @@ class CuestionarioActivity() : AppCompatActivity() {
     private lateinit var mCheckedE: BooleanArray
     private lateinit var mCheckedF: BooleanArray
 
+    /**/
+    private var c = 0
+
+    /**/
     override fun onCreate(savedInstanceState: Bundle?) {
         opcionesPreguntas = ArrayList()
         super.onCreate(savedInstanceState)
@@ -57,6 +64,7 @@ class CuestionarioActivity() : AppCompatActivity() {
         rv = rvPreguntas
         /*manager rv*/
         val qry = preguntasRef.limitToFirst(20)
+
         opcionesPreguntas.size
         mCheckedA = BooleanArray(20)
         mCheckedB = BooleanArray(20)
@@ -64,7 +72,7 @@ class CuestionarioActivity() : AppCompatActivity() {
         mCheckedD = BooleanArray(20)
         mCheckedE = BooleanArray(20)
         mCheckedF = BooleanArray(20)
-        respuestasChoice= BooleanArray(20)
+        respuestasChoice = HashMap()
         opcion = FirebaseRecyclerOptions.Builder<Pregunta>().setQuery(
             qry, Pregunta::class.java
         ).build()
@@ -170,21 +178,30 @@ class CuestionarioActivity() : AppCompatActivity() {
                 var op6 = holder.opcion6
                 rg.clearCheck()
                 holder.tituloPregunta.text = pregunta
-                var posit = position
+
                 for (opcion in opciones) {
                     opcionesCompletas.add(opcion)
                 }
                 opcionesCompletas.add(respuesta)
-                var shuffleOpciones = opcionesCompletas.toMutableList()
-                shuffleOpciones.shuffle()
+
+
                 var opcionesSize = opcionesCompletas.size
                 var i = 0
-                for (opcion in shuffleOpciones) {
+                for (opcion in opcionesCompletas) {
                     if (opcionesSize == 2) {
                         when (i) {
-                            0 -> op1.text = opcion
-                            1 -> op2.text = opcion
-
+                            0 -> {
+                                op1.text = opcion
+                                if (op1.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "A")
+                                }
+                            }
+                            1 -> {
+                                op2.text = opcion
+                                if (op2.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "B")
+                                }
+                            }
                         }
                         rg.removeView(op3)
                         rg.removeView(op4)
@@ -193,14 +210,31 @@ class CuestionarioActivity() : AppCompatActivity() {
                     }
                     if (opcionesSize == 3) {
                         when (i) {
-                            0 -> op1.text = opcion
-                            1 -> op2.text = opcion
+                            0 -> {
+                                op1.text = opcion
+                                if (op1.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "A")
+                                }
+                            }
+                            1 -> {
+                                op2.text = opcion
+                                if (op2.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "B")
+                                }
+                            }
                             2 -> {
                                 if (!rg.contains(op3)) {
                                     rg.addView(op3)
                                     op3.text = opcion
+                                    if (op3.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "C")
+                                    }
+
                                 } else {
                                     op3.text = opcion
+                                    if (op3.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "C")
+                                    }
                                 }
                             }
                         }
@@ -210,22 +244,45 @@ class CuestionarioActivity() : AppCompatActivity() {
                     }
                     if (opcionesSize == 4) {
                         when (i) {
-                            0 -> op1.text = opcion
-                            1 -> op2.text = opcion
+                            0 -> {
+                                op1.text = opcion
+                                if (op1.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "A")
+                                }
+                            }
+                            1 -> {
+                                op2.text = opcion
+                                if (op2.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "B")
+                                }
+                            }
                             2 -> {
                                 if (!rg.contains(op3)) {
                                     rg.addView(op3)
                                     op3.text = opcion
+                                    if (op3.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "C")
+                                    }
+
                                 } else {
                                     op3.text = opcion
+                                    if (op3.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "C")
+                                    }
                                 }
                             }
                             3 -> {
                                 if (!rg.contains(op4)) {
                                     rg.addView(op4)
                                     op4.text = opcion
+                                    if (op4.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "D")
+                                    }
                                 } else {
                                     op4.text = opcion
+                                    if (op4.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "D")
+                                    }
                                 }
                             }
                         }
@@ -235,30 +292,59 @@ class CuestionarioActivity() : AppCompatActivity() {
                     }
                     if (opcionesSize == 5) {
                         when (i) {
-                            0 -> op1.text = opcion
-                            1 -> op2.text = opcion
+                            0 -> {
+                                op1.text = opcion
+                                if (op1.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "A")
+                                }
+                            }
+                            1 -> {
+                                op2.text = opcion
+                                if (op2.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "B")
+                                }
+                            }
                             2 -> {
                                 if (!rg.contains(op3)) {
                                     rg.addView(op3)
                                     op3.text = opcion
+                                    if (op3.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "C")
+                                    }
+
                                 } else {
                                     op3.text = opcion
+                                    if (op3.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "C")
+                                    }
                                 }
                             }
                             3 -> {
                                 if (!rg.contains(op4)) {
                                     rg.addView(op4)
                                     op4.text = opcion
+                                    if (op4.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "D")
+                                    }
                                 } else {
                                     op4.text = opcion
+                                    if (op4.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "D")
+                                    }
                                 }
                             }
                             4 -> {
                                 if (!rg.contains(op5)) {
                                     rg.addView(op5)
                                     op5.text = opcion
+                                    if (op5.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "E")
+                                    }
                                 } else {
                                     op5.text = opcion
+                                    if (op5.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "E")
+                                    }
                                 }
                             }
                         }
@@ -266,38 +352,73 @@ class CuestionarioActivity() : AppCompatActivity() {
                     }
                     if (opcionesSize == 6) {
                         when (i) {
-                            0 -> op1.text = opcion
-                            1 -> op2.text = opcion
+                            0 -> {
+                                op1.text = opcion
+                                if (op1.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "A")
+                                }
+                            }
+                            1 -> {
+                                op2.text = opcion
+                                if (op2.text.equals(respuesta)) {
+                                    respuestasChoice.put(position, "B")
+                                }
+                            }
                             2 -> {
                                 if (!rg.contains(op3)) {
                                     rg.addView(op3)
                                     op3.text = opcion
+                                    if (op3.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "C")
+                                    }
+
                                 } else {
                                     op3.text = opcion
+                                    if (op3.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "C")
+                                    }
                                 }
                             }
                             3 -> {
                                 if (!rg.contains(op4)) {
                                     rg.addView(op4)
                                     op4.text = opcion
+                                    if (op4.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "D")
+                                    }
                                 } else {
                                     op4.text = opcion
+                                    if (op4.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "D")
+                                    }
                                 }
                             }
                             4 -> {
                                 if (!rg.contains(op5)) {
                                     rg.addView(op5)
                                     op5.text = opcion
+                                    if (op5.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "E")
+                                    }
                                 } else {
                                     op5.text = opcion
+                                    if (op5.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "E")
+                                    }
                                 }
                             }
                             5 -> {
                                 if (!rg.contains(op6)) {
                                     rg.addView(op6)
                                     op6.text = opcion
+                                    if (op6.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "F")
+                                    }
                                 } else {
                                     op6.text = opcion
+                                    if (op6.text.equals(respuesta)) {
+                                        respuestasChoice.put(position, "F")
+                                    }
                                 }
                             }
                         }
@@ -500,7 +621,89 @@ class CuestionarioActivity() : AppCompatActivity() {
 
         adapter.startListening()
         btnCalificar.setOnClickListener {
-                
+            var elegidas = HashMap<Int, String>()
+            var i = 0
+            for (i in mCheckedA.indices) {
+                if (mCheckedA.get(i)) {
+                    elegidas.put(i.toInt(), "A")
+                }
+                if (mCheckedB.get(i)) {
+                    elegidas.put(i.toInt(), "B")
+                }
+                if (mCheckedC.get(i)) {
+                    elegidas.put(i.toInt(), "C")
+                }
+                if (mCheckedD.get(i)) {
+                    elegidas.put(i.toInt(), "D")
+                }
+                if (mCheckedE.get(i)) {
+                    elegidas.put(i.toInt(), "E")
+                }
+                if (mCheckedF.get(i)) {
+                    elegidas.put(i.toInt(), "F")
+                }
+
+            }
+
+            for (respuesta in elegidas.keys) {
+                if (respuestasChoice[respuesta].equals(elegidas[respuesta])){
+                    i++
+                }
+
+            }
+            // Use the Builder class for convenient dialog construction
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Su nota es:${i}/20")
+                .setPositiveButton("Reintentar",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        val intent = intent
+                        finish()
+                        startActivity(intent)
+                    })
+                .setNegativeButton("Regresar inicio",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        val intent = Intent(this,MainActivity::class.java)
+                        finish()
+                        startActivity(intent)
+                    })
+            btnCalificar.isClickable=false
+            // Create the AlertDialog object and return it
+            builder.create()
+            builder.show()
+            /*
+            val viewL=layoutInflater.inflate(R.layout.calificacion,null)
+            val popWindow= PopupWindow(viewL,LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT )
+
+            popWindow.showAsDropDown(rv)*/
+            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                popWindow.elevation = 10.0F
+            }
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                // Create a new slide animation for popup window enter transition
+                val slideIn = Slide()
+                slideIn.slideEdge = Gravity.TOP
+                popWindow.enterTransition = slideIn
+
+                // Slide animation for popup window exit transition
+                val slideOut = Slide()
+                slideOut.slideEdge = Gravity.RIGHT
+                popWindow.exitTransition = slideOut
+
+                popWindow.showAtLocation(
+                    root_layout, // Location to display popup window
+                    Gravity.CENTER, // Exact position of layout to display popup
+                    0, // X offset
+                    0 // Y offset
+                )
+            }
+
+            popWindow.contentView=viewL
+            val txt:TextView=viewL.findViewById(R.id.calificacion)
+            txt.text=i.toString()
+            popWindow.showAsDropDown(btnCalificar)
+                */
+
         }
 
 

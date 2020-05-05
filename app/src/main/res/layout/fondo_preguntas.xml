@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     android:background="@drawable/fondo">
 
@@ -34,6 +35,8 @@
                 android:layout_toStartOf="@+id/logo"
                 android:layout_toLeftOf="@+id/logo"
                 android:gravity="center_horizontal"
+                android:id="@+id/fondopreguntaTxts"
+
                 android:text="@string/bienvenido"
                 android:textAlignment="center"
                 android:textColor="@color/blanco"

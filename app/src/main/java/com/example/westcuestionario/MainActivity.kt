@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         var intent: Intent
         super.onStart()
+
+
         rentrenamiento.setOnClickListener() {
             intent = Intent(this.applicationContext, CuestionarioActivity::class.java)
             var key = Asignaturas.REENTRENAMIENTO.name
