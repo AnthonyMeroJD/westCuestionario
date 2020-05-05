@@ -2,6 +2,7 @@ package com.example.westcuestionario
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.icu.text.Transliterator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,10 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fondo_preguntas.*
+import kotlinx.android.synthetic.main.tarjeta_preguntas.*
 import kotlinx.android.synthetic.main.tarjeta_preguntas.view.*
+import kotlinx.android.synthetic.main.tarjeta_preguntas.view.cVPreguntas
+import java.lang.StringBuilder
 
 
 class CuestionarioActivity() : AppCompatActivity() {
@@ -46,7 +50,11 @@ class CuestionarioActivity() : AppCompatActivity() {
     private lateinit var mCheckedF: BooleanArray
 
     /**/
+    private var respuestasShuffleP = HashMap<Int, ArrayList<String>>()
     private var c = 0
+    private var viewHolderCorrectas =ArrayList<Int>()
+    private var viewHolder= HashMap<Int, PreguntasViewHolder>()
+    private var viewHolderIncorrectas =ArrayList<Int>()
 
     /**/
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,6 +136,18 @@ class CuestionarioActivity() : AppCompatActivity() {
     }
 
     /*
+    *@param opcion:String
+    * @param respuesta:String
+    * @param position:Int
+    * @param literal:String
+     */
+    fun literalRespuesta(opcion: String, respuesta: String, posicion: Int, literal: String) {
+        if (opcion.equals(respuesta)) {
+            respuestasChoice.put(posicion, literal)
+        }
+    }
+
+    /*
     * @param View
     * @return ViewHolder
     * view holder para mi recycler
@@ -142,7 +162,7 @@ class CuestionarioActivity() : AppCompatActivity() {
         val opcion4: RadioButton = view.rBopcion4
         val opcion5: RadioButton = view.rBopcion5
         val opcion6: RadioButton = view.rBopcion6
-        val layout = view.parentRg
+        val layout = view.cVPreguntas
 
     }
 
@@ -176,271 +196,325 @@ class CuestionarioActivity() : AppCompatActivity() {
                 var op4 = holder.opcion4
                 var op5 = holder.opcion5
                 var op6 = holder.opcion6
+                var btns = ArrayList<RadioButton>()
+                holder.layout.setCardBackgroundColor(resources.getColor(R.color.blanco))
+                viewHolderCorrectas?.let {
+                    if(it.size>0){
+                        for (n in it){
+                            if (position.equals(n)){
+                                holder.layout.setCardBackgroundColor(resources.getColor(R.color.verdeClaro))
+                            }
+                        }
+                    }
+                }
+                viewHolderIncorrectas?.let {
+                    if(it.size>0){
+                        for (n in it){
+                            if (position.equals(n)){
+                                holder.layout.setCardBackgroundColor(resources.getColor(R.color.rojo))
+                            }
+                        }
+                    }
+                }
+
+                btns.add(op1)
+                btns.add(op2)
+                btns.add(op3)
+                btns.add(op4)
+                btns.add(op5)
+                btns.add(op6)
                 rg.clearCheck()
-                holder.tituloPregunta.text = pregunta
+                holder.tituloPregunta.text = "${position + 1})${pregunta}"
+                fun chequear(
+                    mchecked: BooleanArray,
+                    posicion: Int,
+                    btns: ArrayList<RadioButton>,
+                    rg: RadioGroup,
+                    literal: String
+                ) {
+                    if (mchecked[posicion]) {
+                        when (literal) {
+                            "A" -> {
+                                var i = 0
+                                for (btn in btns) {
+                                    if (i == 0) {
+                                        btn.isChecked = true
+                                    } else {
+                                        if (rg.contains(btn)) {
+                                            btn.isChecked = false
+                                        }
+                                    }
+                                    i++
+                                }
+                            }
+                            "B" -> {
+                                var i = 0
+                                for (btn in btns) {
+                                    if (i == 1) {
+                                        btn.isChecked = true
+                                    } else {
+                                        if (rg.contains(btn)) {
+                                            btn.isChecked = false
+                                        }
+                                    }
+                                    i++
+                                }
+
+                            }
+                            "C" -> {
+                                var i = 0
+                                for (btn in btns) {
+                                    if (i == 2) {
+                                        btn.isChecked = true
+                                    } else {
+                                        if (rg.contains(btn)) {
+                                            btn.isChecked = false
+                                        }
+                                    }
+                                    i++
+                                }
+
+                            }
+                            "D" -> {
+                                var i = 0
+                                for (btn in btns) {
+                                    if (i == 3) {
+                                        btn.isChecked = true
+                                    } else {
+                                        if (rg.contains(btn)) {
+                                            btn.isChecked = false
+                                        }
+                                    }
+                                    i++
+                                }
+                            }
+                            "E" -> {
+                                var i = 0
+                                for (btn in btns) {
+                                    if (i == 4) {
+                                        btn.isChecked = true
+                                    } else {
+                                        if (rg.contains(btn)) {
+                                            btn.isChecked = false
+                                        }
+                                    }
+                                    i++
+                                }
+                            }
+                            "F" -> {
+                                var i = 0
+                                for (btn in btns) {
+                                    if (i == 5) {
+                                        btn.isChecked = true
+                                    } else {
+                                        if (rg.contains(btn)) {
+                                            btn.isChecked = false
+                                        }
+                                    }
+                                    i++
+                                }
+                            }
+                        }
+                    }
+                }
 
                 for (opcion in opciones) {
                     opcionesCompletas.add(opcion)
                 }
                 opcionesCompletas.add(respuesta)
-
+                if (c < 20) {
+                    var preguntasShuffle = opcionesCompletas.toMutableList()
+                    preguntasShuffle.shuffle()
+                    var lista = ArrayList(preguntasShuffle)
+                    respuestasShuffleP.put(position, lista)
+                    viewHolder.put(position, holder)
+                    c++
+                }
 
                 var opcionesSize = opcionesCompletas.size
                 var i = 0
-                for (opcion in opcionesCompletas) {
-                    if (opcionesSize == 2) {
-                        when (i) {
-                            0 -> {
-                                op1.text = opcion
-                                if (op1.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "A")
+                respuestasShuffleP[position]?.let {
+                    for (opcion in it) {
+                        if (opcionesSize == 2) {
+                            when (i) {
+                                0 -> {
+                                    op1.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "A")
+                                }
+                                1 -> {
+                                    op2.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "B")
                                 }
                             }
-                            1 -> {
-                                op2.text = opcion
-                                if (op2.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "B")
-                                }
-                            }
+                            rg.removeView(op3)
+                            rg.removeView(op4)
+                            rg.removeView(op5)
+                            rg.removeView(op6)
                         }
-                        rg.removeView(op3)
-                        rg.removeView(op4)
-                        rg.removeView(op5)
-                        rg.removeView(op6)
-                    }
-                    if (opcionesSize == 3) {
-                        when (i) {
-                            0 -> {
-                                op1.text = opcion
-                                if (op1.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "A")
+                        if (opcionesSize == 3) {
+                            when (i) {
+                                0 -> {
+                                    op1.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "A")
                                 }
-                            }
-                            1 -> {
-                                op2.text = opcion
-                                if (op2.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "B")
+                                1 -> {
+                                    op2.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "B")
                                 }
-                            }
-                            2 -> {
-                                if (!rg.contains(op3)) {
-                                    rg.addView(op3)
-                                    op3.text = opcion
-                                    if (op3.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "C")
-                                    }
+                                2 -> {
+                                    if (!rg.contains(op3)) {
+                                        rg.addView(op3)
+                                        op3.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "C")
 
-                                } else {
-                                    op3.text = opcion
-                                    if (op3.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "C")
+                                    } else {
+                                        op3.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "C")
                                     }
                                 }
                             }
+                            rg.removeView(op4)
+                            rg.removeView(op5)
+                            rg.removeView(op6)
                         }
-                        rg.removeView(op4)
-                        rg.removeView(op5)
-                        rg.removeView(op6)
-                    }
-                    if (opcionesSize == 4) {
-                        when (i) {
-                            0 -> {
-                                op1.text = opcion
-                                if (op1.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "A")
+                        if (opcionesSize == 4) {
+                            when (i) {
+                                0 -> {
+                                    op1.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "A")
                                 }
-                            }
-                            1 -> {
-                                op2.text = opcion
-                                if (op2.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "B")
+                                1 -> {
+                                    op2.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "B")
                                 }
-                            }
-                            2 -> {
-                                if (!rg.contains(op3)) {
-                                    rg.addView(op3)
-                                    op3.text = opcion
-                                    if (op3.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "C")
-                                    }
+                                2 -> {
+                                    if (!rg.contains(op3)) {
+                                        rg.addView(op3)
+                                        op3.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "C")
 
-                                } else {
-                                    op3.text = opcion
-                                    if (op3.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "C")
+                                    } else {
+                                        op3.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "C")
+                                    }
+                                }
+                                3 -> {
+                                    if (!rg.contains(op4)) {
+                                        rg.addView(op4)
+                                        op4.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "D")
+                                    } else {
+                                        op4.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "D")
                                     }
                                 }
                             }
-                            3 -> {
-                                if (!rg.contains(op4)) {
-                                    rg.addView(op4)
-                                    op4.text = opcion
-                                    if (op4.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "D")
-                                    }
-                                } else {
-                                    op4.text = opcion
-                                    if (op4.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "D")
-                                    }
-                                }
-                            }
+
+                            rg.removeView(op5)
+                            rg.removeView(op6)
                         }
-
-                        rg.removeView(op5)
-                        rg.removeView(op6)
-                    }
-                    if (opcionesSize == 5) {
-                        when (i) {
-                            0 -> {
-                                op1.text = opcion
-                                if (op1.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "A")
+                        if (opcionesSize == 5) {
+                            when (i) {
+                                0 -> {
+                                    op1.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "A")
                                 }
-                            }
-                            1 -> {
-                                op2.text = opcion
-                                if (op2.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "B")
+                                1 -> {
+                                    op2.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "B")
                                 }
-                            }
-                            2 -> {
-                                if (!rg.contains(op3)) {
-                                    rg.addView(op3)
-                                    op3.text = opcion
-                                    if (op3.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "C")
-                                    }
-
-                                } else {
-                                    op3.text = opcion
-                                    if (op3.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "C")
+                                2 -> {
+                                    if (!rg.contains(op3)) {
+                                        rg.addView(op3)
+                                        op3.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "C")
+                                    } else {
+                                        op3.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "C")
                                     }
                                 }
-                            }
-                            3 -> {
-                                if (!rg.contains(op4)) {
-                                    rg.addView(op4)
-                                    op4.text = opcion
-                                    if (op4.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "D")
+                                3 -> {
+                                    if (!rg.contains(op4)) {
+                                        rg.addView(op4)
+                                        op4.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "D")
+                                    } else {
+                                        op4.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "D")
                                     }
-                                } else {
-                                    op4.text = opcion
-                                    if (op4.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "D")
+                                }
+                                4 -> {
+                                    if (!rg.contains(op5)) {
+                                        rg.addView(op5)
+                                        op5.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "E")
+                                    } else {
+                                        op5.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "E")
                                     }
                                 }
                             }
-                            4 -> {
-                                if (!rg.contains(op5)) {
-                                    rg.addView(op5)
-                                    op5.text = opcion
-                                    if (op5.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "E")
-                                    }
-                                } else {
-                                    op5.text = opcion
-                                    if (op5.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "E")
-                                    }
-                                }
-                            }
+                            rg.removeView(op6)
                         }
-                        rg.removeView(op6)
-                    }
-                    if (opcionesSize == 6) {
-                        when (i) {
-                            0 -> {
-                                op1.text = opcion
-                                if (op1.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "A")
+                        if (opcionesSize == 6) {
+                            when (i) {
+                                0 -> {
+                                    op1.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "A")
                                 }
-                            }
-                            1 -> {
-                                op2.text = opcion
-                                if (op2.text.equals(respuesta)) {
-                                    respuestasChoice.put(position, "B")
+                                1 -> {
+                                    op2.text = opcion
+                                    literalRespuesta(opcion, respuesta, position, "B")
                                 }
-                            }
-                            2 -> {
-                                if (!rg.contains(op3)) {
-                                    rg.addView(op3)
-                                    op3.text = opcion
-                                    if (op3.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "C")
-                                    }
+                                2 -> {
+                                    if (!rg.contains(op3)) {
+                                        rg.addView(op3)
+                                        op3.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "C")
 
-                                } else {
-                                    op3.text = opcion
-                                    if (op3.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "C")
+                                    } else {
+                                        op3.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "C")
                                     }
                                 }
-                            }
-                            3 -> {
-                                if (!rg.contains(op4)) {
-                                    rg.addView(op4)
-                                    op4.text = opcion
-                                    if (op4.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "D")
-                                    }
-                                } else {
-                                    op4.text = opcion
-                                    if (op4.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "D")
+                                3 -> {
+                                    if (!rg.contains(op4)) {
+                                        rg.addView(op4)
+                                        op4.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "D")
+                                    } else {
+                                        op4.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "D")
                                     }
                                 }
-                            }
-                            4 -> {
-                                if (!rg.contains(op5)) {
-                                    rg.addView(op5)
-                                    op5.text = opcion
-                                    if (op5.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "E")
-                                    }
-                                } else {
-                                    op5.text = opcion
-                                    if (op5.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "E")
+                                4 -> {
+                                    if (!rg.contains(op5)) {
+                                        rg.addView(op5)
+                                        op5.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "E")
+                                    } else {
+                                        op5.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "E")
                                     }
                                 }
-                            }
-                            5 -> {
-                                if (!rg.contains(op6)) {
-                                    rg.addView(op6)
-                                    op6.text = opcion
-                                    if (op6.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "F")
-                                    }
-                                } else {
-                                    op6.text = opcion
-                                    if (op6.text.equals(respuesta)) {
-                                        respuestasChoice.put(position, "F")
+                                5 -> {
+                                    if (!rg.contains(op6)) {
+                                        rg.addView(op6)
+                                        op6.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "F")
+                                    } else {
+                                        op6.text = opcion
+                                        literalRespuesta(opcion, respuesta, position, "F")
                                     }
                                 }
                             }
                         }
+                        i++
                     }
-                    i++
                 }
+
                 /*opcion 1*/
-                if (mCheckedA[position]) {
-                    op1.isChecked = true
-                    op2.isChecked = false
-                    if (rg.contains(op3)) {
-                        op3.isChecked = false
-                    } else if (rg.contains(op4)) {
-                        op4.isChecked = false
-                    } else if (rg.contains(op5)) {
-                        op5.isChecked = false
-                    } else if (rg.contains(op6)) {
-                        op6.isChecked = false
-                    }
-                } else {
-                    op1.isChecked = false
-                }
+                chequear(mCheckedA, position, btns, rg, "A")
                 op1.setOnClickListener {
                     var b = it as RadioButton
                     if (b.isChecked) {
@@ -457,21 +531,7 @@ class CuestionarioActivity() : AppCompatActivity() {
                     }
                 }
                 /*opcion 2*/
-                if (mCheckedB[position]) {
-                    op1.isChecked = false
-                    op2.isChecked = true
-                    if (rg.contains(op3)) {
-                        op3.isChecked = false
-                    } else if (rg.contains(op4)) {
-                        op4.isChecked = false
-                    } else if (rg.contains(op5)) {
-                        op5.isChecked = false
-                    } else if (rg.contains(op6)) {
-                        op6.isChecked = false
-                    }
-                } else {
-                    op2.isChecked = false
-                }
+                chequear(mCheckedB, position, btns, rg, "B")
                 op2.setOnClickListener {
                     var b = it as RadioButton
                     if (b.isChecked == true) {
@@ -489,21 +549,7 @@ class CuestionarioActivity() : AppCompatActivity() {
                 }
                 /*OPCION 3*/
                 if (rg.contains(op3)) {
-                    if (mCheckedC[position]) {
-                        op1.isChecked = false
-                        op2.isChecked = false
-                        op3.isChecked = true
-                        if (rg.contains(op4)) {
-                            op4.isChecked = false
-                        } else if (rg.contains(op5)) {
-                            op5.isChecked = false
-                        } else if (rg.contains(op6)) {
-                            op6.isChecked = false
-                        }
-                    } else {
-                        op3.isChecked = false
-                    }
-
+                    chequear(mCheckedC, position, btns, rg, "C")
                     op3.setOnClickListener {
                         var b = it as RadioButton
                         if (b.isChecked) {
@@ -522,20 +568,7 @@ class CuestionarioActivity() : AppCompatActivity() {
                 }
                 /*OPCION 4*/
                 if (rg.contains(op4)) {
-                    if (mCheckedD[position]) {
-                        op1.isChecked = false
-                        op2.isChecked = false
-                        op3.isChecked = false
-                        op4.isChecked = true
-                        if (rg.contains(op5)) {
-                            op5.isChecked = false
-                        } else if (rg.contains(op6)) {
-                            op6.isChecked = false
-                        }
-                    } else {
-                        op4.isChecked = false
-                    }
-
+                    chequear(mCheckedD, position, btns, rg, "D")
                     op4.setOnClickListener {
                         var b = it as RadioButton
                         if (b.isChecked) {
@@ -554,19 +587,7 @@ class CuestionarioActivity() : AppCompatActivity() {
                 }
                 /*OPCION 5*/
                 if (rg.contains(op5)) {
-                    if (mCheckedE[position]) {
-                        op1.isChecked = false
-                        op2.isChecked = false
-                        op3.isChecked = false
-                        op4.isChecked = false
-                        op5.isChecked = true
-                        if (rg.contains(op6)) {
-                            op6.isChecked = false
-                        }
-                    } else {
-                        op5.isChecked = false
-                    }
-
+                    chequear(mCheckedE, position, btns, rg, "E")
                     op5.setOnClickListener {
                         var b = it as RadioButton
                         if (b.isChecked) {
@@ -585,17 +606,7 @@ class CuestionarioActivity() : AppCompatActivity() {
                 }
                 /*OPCION 6*/
                 if (rg.contains(op6)) {
-                    if (mCheckedF[position]) {
-                        op1.isChecked = false
-                        op2.isChecked = false
-                        op3.isChecked = false
-                        op4.isChecked = false
-                        op5.isChecked = false
-                        op6.isChecked = true
-                    } else {
-                        op6.isChecked = false
-                    }
-
+                    chequear(mCheckedF, position, btns, rg, "F")
                     op6.setOnClickListener {
                         var b = it as RadioButton
                         if (b.isChecked) {
@@ -621,7 +632,11 @@ class CuestionarioActivity() : AppCompatActivity() {
 
         adapter.startListening()
         btnCalificar.setOnClickListener {
+
+            var correctas = ArrayList<Int>()
+            var inCorrectas = ArrayList<Int>()
             var elegidas = HashMap<Int, String>()
+
             var i = 0
             for (i in mCheckedA.indices) {
                 if (mCheckedA.get(i)) {
@@ -646,63 +661,47 @@ class CuestionarioActivity() : AppCompatActivity() {
             }
 
             for (respuesta in elegidas.keys) {
-                if (respuestasChoice[respuesta].equals(elegidas[respuesta])){
+                if (respuestasChoice[respuesta].equals(elegidas[respuesta])) {
+                    correctas.add(respuesta)
                     i++
+                }else{
+                    inCorrectas.add(respuesta)
                 }
-
+            }
+            for (correcta in correctas){
+                viewHolder[correcta]?.let {
+                    it.layout.setCardBackgroundColor(resources.getColor(R.color.verdeClaro))
+                }
+                viewHolderCorrectas.add(correcta)
+            }
+            for (incorrecta in inCorrectas){
+                viewHolder[incorrecta]?.let {
+                    it.layout.setCardBackgroundColor(resources.getColor(R.color.rojo))
+                }
+                viewHolderIncorrectas.add(incorrecta)
             }
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(this)
-            builder.setMessage("Su nota es:${i}/20")
-                .setPositiveButton("Reintentar",
-                    DialogInterface.OnClickListener { dialog, id ->
-                        val intent = intent
-                        finish()
-                        startActivity(intent)
-                    })
+            
+            builder.setMessage(
+                "Su nota es:${i}/20"
+            ).setPositiveButton("Reintentar",
+                DialogInterface.OnClickListener { dialog, id ->
+                    val intent = intent
+                    finish()
+                    startActivity(intent)
+                })
                 .setNegativeButton("Regresar inicio",
                     DialogInterface.OnClickListener { dialog, id ->
-                        val intent = Intent(this,MainActivity::class.java)
+                        val intent = Intent(this, MainActivity::class.java)
                         finish()
                         startActivity(intent)
                     })
-            btnCalificar.isClickable=false
+            btnCalificar.isClickable = false
             // Create the AlertDialog object and return it
             builder.create()
             builder.show()
-            /*
-            val viewL=layoutInflater.inflate(R.layout.calificacion,null)
-            val popWindow= PopupWindow(viewL,LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT )
 
-            popWindow.showAsDropDown(rv)*/
-            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                popWindow.elevation = 10.0F
-            }
-
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                // Create a new slide animation for popup window enter transition
-                val slideIn = Slide()
-                slideIn.slideEdge = Gravity.TOP
-                popWindow.enterTransition = slideIn
-
-                // Slide animation for popup window exit transition
-                val slideOut = Slide()
-                slideOut.slideEdge = Gravity.RIGHT
-                popWindow.exitTransition = slideOut
-
-                popWindow.showAtLocation(
-                    root_layout, // Location to display popup window
-                    Gravity.CENTER, // Exact position of layout to display popup
-                    0, // X offset
-                    0 // Y offset
-                )
-            }
-
-            popWindow.contentView=viewL
-            val txt:TextView=viewL.findViewById(R.id.calificacion)
-            txt.text=i.toString()
-            popWindow.showAsDropDown(btnCalificar)
-                */
 
         }
 
@@ -711,4 +710,5 @@ class CuestionarioActivity() : AppCompatActivity() {
 
 
 }
+
 
