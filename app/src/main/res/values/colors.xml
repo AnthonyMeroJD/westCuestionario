@@ -8,4 +8,6 @@
     <color name="titulos">#202124</color>
     <color name="textos">#5f6368</color>
     <color name="fondoAzulClaro">#13568A</color>
+    <color name="rojo">#B64052</color>
+    <color name="verdeClaro">#90C158</color>
 </resources>
